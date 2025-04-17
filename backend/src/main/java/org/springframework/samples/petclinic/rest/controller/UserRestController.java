@@ -26,11 +26,8 @@ import org.springframework.samples.petclinic.rest.dto.UserDto;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(exposedHeaders = "errors, content-type")
@@ -53,5 +50,15 @@ public class UserRestController implements UsersApi {
         User user = userMapper.toUser(userDto);
         this.userService.saveUser(user);
         return new ResponseEntity<>(userMapper.toUserDto(user), headers, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<UserDto> deleteUser(Integer userId) {
+        User user = this.userService.findUserById(userId);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        this.userService.deleteUser(user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
