@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -18,7 +18,6 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true) // Enable @PreAuthorize method-level security
 @ConditionalOnProperty(name = "petclinic.security.enable", havingValue = "true")
 public class BasicAuthenticationConfig {
 
@@ -39,7 +38,15 @@ public class BasicAuthenticationConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((authz) -> authz
-                .anyRequest().authenticated())
+                .requestMatchers("/api/owners").hasAnyRole("ROLE_OWNER_ADMIN")
+                .requestMatchers("/api/pets").hasAnyRole("ROLE_OWNER_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/pettypes").hasAnyRole("ROLE_OWNER_ADMIN", "ROLE_VET_ADMIN")
+                .requestMatchers("/api/pettypes").hasAnyRole("ROLE_VET_ADMIN")
+                .requestMatchers("/api/specialties").hasAnyRole("ROLE_VET_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/users").hasAnyRole("ROLE_ADMIN")
+                .requestMatchers("/api/vets").hasAnyRole("ROLE_VET_ADMIN")
+                .requestMatchers("/api/visits").hasAnyRole("ROLE_OWNER_ADMIN")
+                .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults());
         // @formatter:on
         return http.build();
