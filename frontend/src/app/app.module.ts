@@ -35,6 +35,7 @@ import {PartsModule} from './parts/parts.module';
 import {SpecialtiesModule} from './specialties/specialties.module';
 import {HttpErrorHandler} from './error.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {UsersModule} from './users/users.module';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     OwnersModule,
     PetsModule,
     VisitsModule,
+    UsersModule,
     PetTypesModule,
     VetsModule,
     SpecialtiesModule,
