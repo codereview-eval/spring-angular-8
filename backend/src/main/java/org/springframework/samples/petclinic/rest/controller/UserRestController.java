@@ -49,4 +49,14 @@ public class UserRestController implements UsersApi {
         this.userService.saveUser(user);
         return new ResponseEntity<>(userMapper.toUserDto(user), headers, HttpStatus.CREATED);
     }
+
+    @Override
+    public ResponseEntity<UserDto> deleteUser(Integer userId) {
+        User user = this.userService.findUserById(userId);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        this.userService.deleteUser(user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

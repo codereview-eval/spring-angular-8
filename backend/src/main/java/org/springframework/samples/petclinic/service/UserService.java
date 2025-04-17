@@ -4,5 +4,7 @@ import org.springframework.samples.petclinic.model.User;
 
 public interface UserService {
 
-    void saveUser(User user) ;
+    User findUserById(int id);
+    void saveUser(User user);
+    void deleteUser(User user);
 }
