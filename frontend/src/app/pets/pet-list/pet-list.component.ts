@@ -61,4 +61,14 @@ export class PetListComponent implements OnInit {
     this.router.navigate(['/pets', pet.id, 'visits', 'add']);
   }
 
+  calculateAge(pet: Pet) {
+    return this.getYearsDifference(Date.now(), Date.parse(pet.birthDate));
+  }
+
+  private getYearsDifference(date1: number, date2: number) {
+    const differenceInMillis = date2 - date1;
+    const millisecondsInYear = 1000 * 60 * 60 * 24 * 365.25;
+    return differenceInMillis / millisecondsInYear;
+  }
+
 }

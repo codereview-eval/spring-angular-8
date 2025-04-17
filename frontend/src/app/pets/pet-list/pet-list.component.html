@@ -24,6 +24,8 @@
         <dd>{{ pet.name }}</dd>
         <dt>Birth Date</dt>
         <dd>{{ pet.birthDate }}</dd>
+        <dt>Age in Years</dt>
+        <dd>{{ calculateAge(pet) | number : '1.1-1' }}</dd>
         <dt>Type</dt>
         <dd *ngIf="!deleteSuccess">{{ pet.type.name }}</dd>
         <button class="btn btn-default" (click)="editPet(pet)">Edit Pet</button>
